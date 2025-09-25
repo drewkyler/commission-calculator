@@ -1,266 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Commission Calculator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .table-cell {
-            padding: 0.75rem;
-            text-align: left;
-            font-size: 0.875rem;
-            line-height: 1.25rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .table-header {
-            padding: 0.75rem;
-            text-align: left;
-            font-size: 0.75rem;
-            line-height: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background-color: #f9fafb;
-            color: #4b5563;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commission Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .table-header {
+      @apply px-4 py-2 text-left text-sm font-semibold text-gray-600;
+    }
+    .table-cell {
+      @apply px-4 py-2 text-sm text-gray-700;
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-100 min-h-screen">
+  <div class="max-w-7xl mx-auto py-10 px-4">
+    <header class="mb-10">
+      <h1 class="text-3xl font-bold text-gray-800">Commission Calculator</h1>
+      <p class="text-gray-600">Add deals, track revenue, and calculate commission payouts.</p>
+    </header>
 
-    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
-        <header class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Commission Calculator</h1>
-            <p class="text-gray-600 mt-1">Enter your deals below to calculate quarterly and annual commissions.</p>
-        </header>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Left Column: Inputs & Summary -->
-            <div class="lg:col-span-1 space-y-8">
-                <!-- Constants Card -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">Quota & Rates</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500">Annual Quota</label>
-                            <input type="number" id="annualQuota" value="1500000" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500">Quarterly Quota</label>
-                            <input type="number" id="quarterlyQuota" value="375000" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
-                        </div>
-                    </div>
-                </div>
-
-                 <!-- Deal Input Card -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">Add a New Deal</h2>
-                    <form id="dealForm" class="space-y-4">
-                        <div>
-                            <label for="dealName" class="block text-sm font-medium text-gray-700">Deal Name</label>
-                            <input type="text" id="dealName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="e.g., Acme Corp Contract">
-                        </div>
-                        <div>
-                            <label for="dealQuarter" class="block text-sm font-medium text-gray-700">Quarter</label>
-                            <select id="dealQuarter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
-                                <option>Q1</option>
-                                <option>Q2</option>
-                                <option>Q3</option>
-                                <option>Q4</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="dealValue" class="block text-sm font-medium text-gray-700">Deal Value ($)</label>
-                            <input type="number" id="dealValue" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="e.g., 50000">
-                        </div>
-                        <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
-                            Add Deal
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Summary Card -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">Performance Overview</h2>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full">
-                            <thead>
-                                <tr>
-                                    <th class="table-header">Quarter</th>
-                                    <th class="table-header">Revenue</th>
-                                    <th class="table-header">Commission</th>
-                                    <th class="table-header">Revenue YTD</th>
-                                </tr>
-                            </thead>
-                            <tbody id="summaryTableBody">
-                                <!-- JS will populate this -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Left Column: Inputs -->
+      <div class="lg:col-span-1 space-y-8">
+        <!-- Constants Card -->
+        <div class="bg-white p-6 rounded-xl shadow-md">
+          <h2 class="text-xl font-semibold mb-4">Quota & Rates</h2>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-500">Annual Quota</label>
+              <input type="number" id="annualQuota" value="1500000" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
             </div>
-
-            <!-- Right Column: Deal Details -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-xl shadow-md">
-                    <div class="p-6 border-b border-gray-200">
-                         <h2 class="text-xl font-semibold">Deal Log & Commission Breakdown</h2>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full">
-                            <thead>
-                                <tr>
-                                    <th class="table-header">Deal Name</th>
-                                    <th class="table-header">Quarter</th>
-                                    <th class="table-header">Deal Value</th>
-                                    <th class="table-header">Commission</th>
-                                    <th class="table-header">Total Commission YTD</th>
-                                </tr>
-                            </thead>
-                            <tbody id="dealsTableBody" class="divide-y divide-gray-200">
-                                <!-- JS will populate this -->
-                                <tr><td colspan="5" class="text-center p-8 text-gray-500">No deals added yet.</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    </div>
 
-    <script>
-        const dealForm = document.getElementById('dealForm');
-        const dealsTableBody = document.getElementById('dealsTableBody');
-        const summaryTableBody = document.getElementById('summaryTableBody');
-        
-        const quarterlyRates = [{ threshold: 0, rate: 0.10 }, { threshold: 1, rate: 0.12 }, { threshold: 1.25, rate: 0.15 }, { threshold: 1.50, rate: 0.17 }];
-        const annualRates = [{ threshold: 0, rate: 0.10 }, { threshold: 1, rate: 0.12 }, { threshold: 1.25, rate: 0.15 }, { threshold: 1.50, rate: 0.17 }];
-        let deals = [];
+        <!-- Deal Entry Card -->
+        <div class="bg-white p-6 rounded-xl shadow-md">
+          <h2 class="text-xl font-semibold mb-4">Add Deal</h2>
+          <form id="dealForm" class="space-y-4">
+            <div>
+              <label for="dealName" class="block text-sm font-medium text-gray-700">Deal Name</label>
+              <input type="text" id="dealName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="e.g., Acme Corp Contract">
+            </div>
+            <div>
+              <label for="dealQuarter" class="block text-sm font-medium text-gray-700">Quarter</label>
+              <select id="dealQuarter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                <option>Q1</option>
+                <option>Q2</option>
+                <option>Q3</option>
+                <option>Q4</option>
+              </select>
+            </div>
+            <div>
+              <label for="dealValue" class="block text-sm font-medium text-gray-700">Deal Value ($)</label>
+              <input type="number" id="dealValue" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="e.g., 50000">
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+              Add Deal
+            </button>
+          </form>
+        </div>
+      </div>
 
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-        }
-
-        function calculateCommissions() {
-            const annualQuota = parseFloat(document.getElementById('annualQuota').value) || 1500000;
-            const quarterlyQuota = parseFloat(document.getElementById('quarterlyQuota').value) || 375000;
-            let ytdRevenue = 0;
-            let ytdCommission = 0;
-            const quarterlyRevenue = { Q1: 0, Q2: 0, Q3: 0, Q4: 0 };
-            deals.sort((a, b) => a.quarter.localeCompare(b.quarter));
-            
-            const calculatedDeals = deals.map(deal => {
-                const ytdRevenueBeforeDeal = ytdRevenue;
-                const quarterlyRevenueBeforeDeal = quarterlyRevenue[deal.quarter];
-                let dealCommission = 0;
-                const portionSubjectToQuarterly = Math.max(0, Math.min(deal.value, annualQuota - ytdRevenueBeforeDeal));
-                const portionSubjectToAnnual = deal.value - portionSubjectToQuarterly;
-
-                if (portionSubjectToQuarterly > 0) {
-                    let revForQuarterlyCalc = quarterlyRevenueBeforeDeal;
-                    let remainingQuarterlyPortion = portionSubjectToQuarterly;
-                    
-                    let amtInTier1 = Math.max(0, Math.min(quarterlyQuota * quarterlyRates[1].threshold, revForQuarterlyCalc + remainingQuarterlyPortion) - revForQuarterlyCalc);
-                    dealCommission += amtInTier1 * quarterlyRates[0].rate;
-                    revForQuarterlyCalc += amtInTier1;
-                    remainingQuarterlyPortion -= amtInTier1;
-                    
-                    if (remainingQuarterlyPortion > 0) {
-                        let amtInTier2 = Math.max(0, Math.min(quarterlyQuota * quarterlyRates[2].threshold, revForQuarterlyCalc + remainingQuarterlyPortion) - revForQuarterlyCalc);
-                        dealCommission += amtInTier2 * quarterlyRates[1].rate;
-                        revForQuarterlyCalc += amtInTier2;
-                        remainingQuarterlyPortion -= amtInTier2;
-                    }
-
-                    if (remainingQuarterlyPortion > 0) {
-                         let amtInTier3 = Math.max(0, Math.min(quarterlyQuota * quarterlyRates[3].threshold, revForQuarterlyCalc + remainingQuarterlyPortion) - revForQuarterlyCalc);
-                        dealCommission += amtInTier3 * quarterlyRates[2].rate;
-                        revForQuarterlyCalc += amtInTier3;
-                        remainingQuarterlyPortion -= amtInTier3;
-                    }
-                    
-                    if (remainingQuarterlyPortion > 0) {
-                        dealCommission += remainingQuarterlyPortion * quarterlyRates[3].rate;
-                    }
-                }
-                
-                if (portionSubjectToAnnual > 0) {
-                    let revForAnnualCalc = ytdRevenueBeforeDeal + portionSubjectToQuarterly;
-                    let remainingAnnualPortion = portionSubjectToAnnual;
-                    
-                    let amtInTier1 = Math.max(0, Math.min(annualQuota * annualRates[2].threshold, revForAnnualCalc + remainingAnnualPortion) - revForAnnualCalc);
-                    dealCommission += amtInTier1 * annualRates[1].rate;
-                    revForAnnualCalc += amtInTier1;
-                    remainingAnnualPortion -= amtInTier1;
-                    
-                    if(remainingAnnualPortion > 0) {
-                        let amtInTier2 = Math.max(0, Math.min(annualQuota * annualRates[3].threshold, revForAnnualCalc + remainingAnnualPortion) - revForAnnualCalc);
-                        dealCommission += amtInTier2 * annualRates[2].rate;
-                        revForAnnualCalc += amtInTier2;
-                        remainingAnnualPortion -= amtInTier2;
-                    }
-
-                    if(remainingAnnualPortion > 0) {
-                        dealCommission += remainingAnnualPortion * annualRates[3].rate;
-                    }
-                }
-                ytdRevenue += deal.value;
-                ytdCommission += dealCommission;
-                quarterlyRevenue[deal.quarter] += deal.value;
-                return { ...deal, commission: dealCommission, ytdCommission };
-            });
-            renderTables(calculatedDeals);
-        }
-
-        function renderTables(calculatedDeals) {
-            dealsTableBody.innerHTML = calculatedDeals.length === 0 ? '<tr><td colspan="5" class="text-center p-8 text-gray-500">No deals added yet.</td></tr>' : calculatedDeals.map(d => `
+      <!-- Right Column: Deal Details -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-xl shadow-md">
+          <div class="p-6 border-b border-gray-200">
+            <h2 class="text-xl font-semibold">Deal Log & Commission Breakdown</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead>
                 <tr>
-                    <td class="table-cell font-medium text-gray-900">${d.name}</td>
-                    <td class="table-cell">${d.quarter}</td>
-                    <td class="table-cell">${formatCurrency(d.value)}</td>
-                    <td class="table-cell text-green-600 font-semibold">${formatCurrency(d.commission)}</td>
-                    <td class="table-cell">${formatCurrency(d.ytdCommission)}</td>
-                </tr>`).join('');
-            
-            const summary = { Q1: {rev:0, com:0}, Q2: {rev:0, com:0}, Q3: {rev:0, com:0}, Q4: {rev:0, com:0} };
-            calculatedDeals.forEach(d => {
-                summary[d.quarter].rev += d.value;
-                summary[d.quarter].com += d.commission;
-            });
-            let summaryYtdRevenue = 0;
-            summaryTableBody.innerHTML = ['Q1', 'Q2', 'Q3', 'Q4'].map(q => {
-                summaryYtdRevenue += summary[q].rev;
-                return `
-                    <tr>
-                        <td class="table-cell font-semibold">${q}</td>
-                        <td class="table-cell">${formatCurrency(summary[q].rev)}</td>
-                        <td class="table-cell">${formatCurrency(summary[q].com)}</td>
-                        <td class="table-cell">${formatCurrency(summaryYtdRevenue)}</td>
-                    </tr>`}).join('');
-        }
+                  <th class="table-header">Deal Name</th>
+                  <th class="table-header">Quarter</th>
+                  <th class="table-header">Deal Value</th>
+                  <th class="table-header">Commission</th>
+                  <th class="table-header">Total Commission YTD</th>
+                </tr>
+              </thead>
+              <tbody id="dealsTableBody" class="divide-y divide-gray-200">
+                <tr><td colspan="5" class="text-center p-8 text-gray-500">No deals added yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
-        dealForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const dealName = document.getElementById('dealName').value;
-            const dealQuarter = document.getElementById('dealQuarter').value;
-            const dealValue = parseFloat(document.getElementById('dealValue').value);
-            if (dealName && dealValue) {
-              deals.push({ name: dealName, quarter: dealQuarter, value: dealValue });
-              calculateCommissions();
-              dealForm.reset();
-            }
-        });
-        
-        document.getElementById('annualQuota').addEventListener('input', calculateCommissions);
-        document.getElementById('quarterlyQuota').addEventListener('input', calculateCommissions);
+      <!-- Full Width: Performance Overview -->
+      <div class="lg:col-span-3">
+        <div class="bg-white p-6 rounded-xl shadow-md">
+          <h2 class="text-xl font-semibold mb-4">Performance Overview</h2>
+          <div>
+            <table class="min-w-full">
+              <thead>
+                <tr>
+                  <th class="table-header">Quarter</th>
+                  <th class="table-header">Revenue</th>
+                  <th class="table-header">Commission</th>
+                  <th class="table-header">Revenue YTD</th>
+                </tr>
+              </thead>
+              <tbody id="summaryTableBody">
+                <!-- JS will populate this -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        calculateCommissions();
-    </script>
+  <script>
+    const dealForm = document.getElementById('dealForm');
+    const dealsTableBody = document.getElementById('dealsTableBody');
+    const summaryTableBody = document.getElementById('summaryTableBody');
+
+    const quarterlyRates = [
+      { threshold: 0, rate: 0.10 },
+      { threshold: 1, rate: 0.12 },
+      { threshold: 1.25, rate: 0.15 },
+      { threshold: 1.50, rate: 0.17 }
+    ];
+
+    const annualRates = [
+      { threshold: 0, rate: 0.10 },
+      { threshold: 1, rate: 0.12 },
+      { threshold: 1.25, rate: 0.15 },
+      { threshold: 1.50, rate: 0.17 }
+    ];
+
+    let deals = [];
+
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+    }
+
+    function calculateCommission(value, rates, quota) {
+      let commission = 0;
+      let remaining = value;
+      for (let i = 0; i < rates.length; i++) {
+        const tierQuota = quota * (i + 1 < rates.length ? rates[i+1].threshold : Infinity) - quota * rates[i].threshold;
+        const applied = Math.min(remaining, tierQuota);
+        commission += applied * rates[i].rate;
+        remaining -= applied;
+        if (remaining <= 0) break;
+      }
+      return commission;
+    }
+
+    dealForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('dealName').value;
+      const quarter = document.getElementById('dealQuarter').value;
+      const value = parseFloat(document.getElementById('dealValue').value);
+      const quota = parseFloat(document.getElementById('annualQuota').value);
+
+      const commission = calculateCommission(value, quarterlyRates, quota / 4);
+
+      deals.push({ name, quarter, value, commission });
+
+      renderTables();
+      dealForm.reset();
+    });
+
+    function renderTables() {
+      dealsTableBody.innerHTML = '';
+      summaryTableBody.innerHTML = '';
+
+      let ytdRevenue = 0;
+      let ytdCommission = 0;
+      const quarters = { Q1: { revenue: 0, commission: 0 }, Q2: { revenue: 0, commission: 0 }, Q3: { revenue: 0, commission: 0 }, Q4: { revenue: 0, commission: 0 } };
+
+      deals.forEach((deal, idx) => {
+        ytdRevenue += deal.value;
+        ytdCommission += deal.commission;
+
+        quarters[deal.quarter].revenue += deal.value;
+        quarters[deal.quarter].commission += deal.commission;
+
+        dealsTableBody.innerHTML += `
+          <tr>
+            <td class="table-cell">${deal.name}</td>
+            <td class="table-cell">${deal.quarter}</td>
+            <td class="table-cell">${formatCurrency(deal.value)}</td>
+            <td class="table-cell">${formatCurrency(deal.commission)}</td>
+            <td class="table-cell">${formatCurrency(ytdCommission)}</td>
+          </tr>
+        `;
+      });
+
+      let cumRevenue = 0;
+      for (const q of ['Q1','Q2','Q3','Q4']) {
+        cumRevenue += quarters[q].revenue;
+        summaryTableBody.innerHTML += `
+          <tr>
+            <td class="table-cell">${q}</td>
+            <td class="table-cell">${formatCurrency(quarters[q].revenue)}</td>
+            <td class="table-cell">${formatCurrency(quarters[q].commission)}</td>
+            <td class="table-cell">${formatCurrency(cumRevenue)}</td>
+          </tr>
+        `;
+      }
+    }
+  </script>
 </body>
 </html>
-

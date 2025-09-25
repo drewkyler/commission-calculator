@@ -28,6 +28,19 @@
             background-color: #f9fafb;
             color: #4b5563;
         }
+        .rate-input {
+            margin-top: 0.25rem;
+            display: block;
+            width: 100%;
+            border-radius: 0.375rem;
+            border-color: #d1d5db;
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            padding: 0.5rem;
+        }
+        .rate-input:focus {
+            border-color: #4f46e5;
+            --tw-ring-color: #4f46e5;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -35,78 +48,122 @@
     <div class="container mx-auto p-4 sm:p-6 lg:p-8">
         <header class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900">Commission Calculator</h1>
-            <p class="text-gray-600 mt-1">Enter your deals below to calculate quarterly and annual commissions.</p>
+            <p class="text-gray-600 mt-1">Configure your plan, then add deals to see your commission breakdown.</p>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-1 space-y-8">
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">Quota & Rates</h2>
-                    <div class="space-y-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Plan Settings</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500">Annual Quota</label>
+                        <input type="number" id="annualQuota" value="1500000" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500">Quarterly Quota</label>
+                        <input type="number" id="quarterlyQuota" value="375000" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                    </div>
+                </div>
+                
+                <div class="mt-6 pt-4 border-t">
+                    <h3 class="text-lg font-medium text-gray-800 mb-3">Quarterly Commission Rates (%)</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-500">Annual Quota</label>
-                            <input type="number" id="annualQuota" value="1500000" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                            <label for="qRate1" class="block text-sm font-medium text-gray-500">0-100%</label>
+                            <input type="number" id="qRate1" value="10" class="rate-input">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-500">Quarterly Quota</label>
-                            <input type="number" id="quarterlyQuota" value="375000" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                            <label for="qRate2" class="block text-sm font-medium text-gray-500">100-125%</label>
+                            <input type="number" id="qRate2" value="12" class="rate-input">
+                        </div>
+                        <div>
+                            <label for="qRate3" class="block text-sm font-medium text-gray-500">125-150%</label>
+                            <input type="number" id="qRate3" value="15" class="rate-input">
+                        </div>
+                        <div>
+                            <label for="qRate4" class="block text-sm font-medium text-gray-500">>150%</label>
+                            <input type="number" id="qRate4" value="17" class="rate-input">
                         </div>
                     </div>
                 </div>
-
-                 <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">Add a New Deal</h2>
-                    <form id="dealForm" class="space-y-4">
+                <div class="mt-4 pt-4 border-t">
+                    <h3 class="text-lg font-medium text-gray-800 mb-3">Annual Escalator Rates (%)</h3>
+                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <div>
-                            <label for="dealName" class="block text-sm font-medium text-gray-700">Deal Name</label>
-                            <input type="text" id="dealName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="e.g., Acme Corp Contract">
+                            <label for="aRate1" class="block text-sm font-medium text-gray-500">0-100%</label>
+                            <input type="number" id="aRate1" value="10" class="rate-input">
                         </div>
                         <div>
-                            <label for="dealQuarter" class="block text-sm font-medium text-gray-700">Quarter</label>
-                            <select id="dealQuarter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
-                                <option>Q1</option>
-                                <option>Q2</option>
-                                <option>Q3</option>
-                                <option>Q4</option>
-                            </select>
+                            <label for="aRate2" class="block text-sm font-medium text-gray-500">100-125%</label>
+                            <input type="number" id="aRate2" value="12" class="rate-input">
                         </div>
-                        <div>
-                            <label for="dealValue" class="block text-sm font-medium text-gray-700">Deal Value ($)</label>
-                            <input type="number" id="dealValue" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="e.g., 50000">
+                         <div>
+                            <label for="aRate3" class="block text-sm font-medium text-gray-500">125-150%</label>
+                            <input type="number" id="aRate3" value="15" class="rate-input">
                         </div>
-                        <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
-                            Add Deal
-                        </button>
-                    </form>
+                         <div>
+                            <label for="aRate4" class="block text-sm font-medium text-gray-500">>150%</label>
+                            <input type="number" id="aRate4" value="17" class="rate-input">
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-xl shadow-md">
-                    <div class="p-6 border-b border-gray-200">
-                         <h2 class="text-xl font-semibold">Deal Log & Commission Breakdown</h2>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 id="formTitle" class="text-xl font-semibold mb-4">Add a New Deal</h2>
+                <form id="dealForm" class="space-y-4">
+                    <div>
+                        <label for="dealName" class="block text-sm font-medium text-gray-700">Deal Name</label>
+                        <input type="text" id="dealName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="e.g., Acme Corp Contract">
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full">
-                            <thead>
-                                <tr>
-                                    <th class="table-header">Deal Name</th>
-                                    <th class="table-header">Quarter</th>
-                                    <th class="table-header">Deal Value</th>
-                                    <th class="table-header">Commission</th>
-                                    <th class="table-header">Total Commission YTD</th>
-                                </tr>
-                            </thead>
-                            <tbody id="dealsTableBody" class="divide-y divide-gray-200">
-                                <tr><td colspan="5" class="text-center p-8 text-gray-500">No deals added yet.</td></tr>
-                            </tbody>
-                        </table>
+                    <div>
+                        <label for="dealQuarter" class="block text-sm font-medium text-gray-700">Quarter</label>
+                        <select id="dealQuarter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                            <option>Q1</option>
+                            <option>Q2</option>
+                            <option>Q3</option>
+                            <option>Q4</option>
+                        </select>
                     </div>
-                </div>
+                    <div>
+                        <label for="dealValue" class="block text-sm font-medium text-gray-700">Deal Value ($)</label>
+                        <input type="number" id="dealValue" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="e.g., 50000">
+                    </div>
+                    <button type="submit" id="submitBtn" class="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                        Add Deal
+                    </button>
+                    <button type="button" id="cancelEditBtn" class="hidden w-full bg-gray-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition duration-150 ease-in-out">
+                        Cancel Edit
+                    </button>
+                </form>
             </div>
         </div>
+        
+        <div class="space-y-8">
+            <div class="bg-white rounded-xl shadow-md">
+                <div class="p-6 border-b border-gray-200">
+                     <h2 class="text-xl font-semibold">Deal Log & Commission Breakdown</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr>
+                                <th class="table-header">Deal Name</th>
+                                <th class="table-header">Quarter</th>
+                                <th class="table-header">Deal Value</th>
+                                <th class="table-header">Commission</th>
+                                <th class="table-header">Total Commission YTD</th>
+                                <th class="table-header">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dealsTableBody" class="divide-y divide-gray-200">
+                            <tr><td colspan="6" class="text-center p-8 text-gray-500">No deals added yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-        <div class="mt-8">
             <div class="bg-white p-6 rounded-xl shadow-md">
                 <h2 class="text-xl font-semibold mb-4">Performance Overview</h2>
                 <div>
@@ -129,25 +186,49 @@
     </div>
 
     <script>
+        // DOM Elements
         const dealForm = document.getElementById('dealForm');
         const dealsTableBody = document.getElementById('dealsTableBody');
         const summaryTableBody = document.getElementById('summaryTableBody');
-        
-        const quarterlyRates = [{ threshold: 0, rate: 0.10 }, { threshold: 1, rate: 0.12 }, { threshold: 1.25, rate: 0.15 }, { threshold: 1.50, rate: 0.17 }];
-        const annualRates = [{ threshold: 0, rate: 0.10 }, { threshold: 1, rate: 0.12 }, { threshold: 1.25, rate: 0.15 }, { threshold: 1.50, rate: 0.17 }];
+        const formTitle = document.getElementById('formTitle');
+        const submitBtn = document.getElementById('submitBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+        // App State
         let deals = [];
+        let nextDealId = 0;
+        let currentlyEditingDealId = null;
+
+        function getCommissionRates() {
+            const getRate = (id) => (parseFloat(document.getElementById(id).value) || 0) / 100;
+            const quarterlyRates = [
+                { threshold: 0,    rate: getRate('qRate1') }, 
+                { threshold: 1,    rate: getRate('qRate2') }, 
+                { threshold: 1.25, rate: getRate('qRate3') }, 
+                { threshold: 1.50, rate: getRate('qRate4') }
+            ];
+            const annualRates = [
+                { threshold: 0,    rate: getRate('aRate1') }, 
+                { threshold: 1,    rate: getRate('aRate2') }, 
+                { threshold: 1.25, rate: getRate('aRate3') }, 
+                { threshold: 1.50, rate: getRate('aRate4') }
+            ];
+            return { quarterlyRates, annualRates };
+        }
 
         function formatCurrency(value) {
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
         }
-
+        
         function calculateCommissions() {
+            const { quarterlyRates, annualRates } = getCommissionRates();
             const annualQuota = parseFloat(document.getElementById('annualQuota').value) || 1500000;
             const quarterlyQuota = parseFloat(document.getElementById('quarterlyQuota').value) || 375000;
+            
             let ytdRevenue = 0;
             let ytdCommission = 0;
             const quarterlyRevenue = { Q1: 0, Q2: 0, Q3: 0, Q4: 0 };
-            deals.sort((a, b) => a.quarter.localeCompare(b.quarter));
+            deals.sort((a, b) => a.quarter.localeCompare(b.quarter) || a.id - b.id);
             
             const calculatedDeals = deals.map(deal => {
                 const ytdRevenueBeforeDeal = ytdRevenue;
@@ -185,23 +266,28 @@
                 }
                 
                 if (portionSubjectToAnnual > 0) {
+                    // This logic is based on the original script's complex annual accelerator model.
+                    // It assumes annual escalators apply only to revenue exceeding the annual quota.
                     let revForAnnualCalc = ytdRevenueBeforeDeal + portionSubjectToQuarterly;
                     let remainingAnnualPortion = portionSubjectToAnnual;
                     
+                    // Portion from 100% to 125% of Annual Quota
                     let amtInTier1 = Math.max(0, Math.min(annualQuota * annualRates[2].threshold, revForAnnualCalc + remainingAnnualPortion) - revForAnnualCalc);
-                    dealCommission += amtInTier1 * annualRates[1].rate;
+                    dealCommission += amtInTier1 * annualRates[1].rate; // Uses the 100-125% rate
                     revForAnnualCalc += amtInTier1;
                     remainingAnnualPortion -= amtInTier1;
                     
+                    // Portion from 125% to 150% of Annual Quota
                     if(remainingAnnualPortion > 0) {
                         let amtInTier2 = Math.max(0, Math.min(annualQuota * annualRates[3].threshold, revForAnnualCalc + remainingAnnualPortion) - revForAnnualCalc);
-                        dealCommission += amtInTier2 * annualRates[2].rate;
+                        dealCommission += amtInTier2 * annualRates[2].rate; // Uses the 125-150% rate
                         revForAnnualCalc += amtInTier2;
                         remainingAnnualPortion -= amtInTier2;
                     }
 
+                    // Portion above 150% of Annual Quota
                     if(remainingAnnualPortion > 0) {
-                        dealCommission += remainingAnnualPortion * annualRates[3].rate;
+                        dealCommission += remainingAnnualPortion * annualRates[3].rate; // Uses the >150% rate
                     }
                 }
                 ytdRevenue += deal.value;
@@ -213,13 +299,16 @@
         }
 
         function renderTables(calculatedDeals) {
-            dealsTableBody.innerHTML = calculatedDeals.length === 0 ? '<tr><td colspan="5" class="text-center p-8 text-gray-500">No deals added yet.</td></tr>' : calculatedDeals.map(d => `
+            dealsTableBody.innerHTML = calculatedDeals.length === 0 ? '<tr><td colspan="6" class="text-center p-8 text-gray-500">No deals added yet.</td></tr>' : calculatedDeals.map(d => `
                 <tr>
                     <td class="table-cell font-medium text-gray-900">${d.name}</td>
                     <td class="table-cell">${d.quarter}</td>
                     <td class="table-cell">${formatCurrency(d.value)}</td>
                     <td class="table-cell text-green-600 font-semibold">${formatCurrency(d.commission)}</td>
                     <td class="table-cell">${formatCurrency(d.ytdCommission)}</td>
+                    <td class="table-cell text-center">
+                        <button data-id="${d.id}" class="edit-btn text-indigo-600 hover:text-indigo-900 text-sm font-medium">Edit</button>
+                    </td>
                 </tr>`).join('');
             
             const summary = { Q1: {rev:0, com:0}, Q2: {rev:0, com:0}, Q3: {rev:0, com:0}, Q4: {rev:0, com:0} };
@@ -238,22 +327,68 @@
                         <td class="table-cell">${formatCurrency(summaryYtdRevenue)}</td>
                     </tr>`}).join('');
         }
+        
+        function startEditing(dealId) {
+            const deal = deals.find(d => d.id === dealId);
+            if (!deal) return;
+
+            currentlyEditingDealId = dealId;
+            document.getElementById('dealName').value = deal.name;
+            document.getElementById('dealQuarter').value = deal.quarter;
+            document.getElementById('dealValue').value = deal.value;
+
+            formTitle.textContent = 'Edit Deal';
+            submitBtn.textContent = 'Update Deal';
+            cancelEditBtn.classList.remove('hidden');
+            dealForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function cancelEditing() {
+            currentlyEditingDealId = null;
+            dealForm.reset();
+            formTitle.textContent = 'Add a New Deal';
+            submitBtn.textContent = 'Add Deal';
+            cancelEditBtn.classList.add('hidden');
+        }
 
         dealForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const dealName = document.getElementById('dealName').value;
             const dealQuarter = document.getElementById('dealQuarter').value;
             const dealValue = parseFloat(document.getElementById('dealValue').value);
-            if (dealName && dealValue) {
-              deals.push({ name: dealName, quarter: dealQuarter, value: dealValue });
-              calculateCommissions();
-              dealForm.reset();
+
+            if (!dealName || isNaN(dealValue)) return;
+
+            if (currentlyEditingDealId !== null) {
+                // Update existing deal
+                const dealIndex = deals.findIndex(d => d.id === currentlyEditingDealId);
+                if (dealIndex > -1) {
+                    deals[dealIndex] = { ...deals[dealIndex], name: dealName, quarter: dealQuarter, value: dealValue };
+                }
+            } else {
+                // Add new deal
+                deals.push({ id: nextDealId++, name: dealName, quarter: dealQuarter, value: dealValue });
+            }
+            
+            calculateCommissions();
+            cancelEditing();
+        });
+
+        dealsTableBody.addEventListener('click', (e) => {
+            if (e.target.classList.contains('edit-btn')) {
+                const dealId = parseInt(e.target.dataset.id, 10);
+                startEditing(dealId);
             }
         });
-        
-        document.getElementById('annualQuota').addEventListener('input', calculateCommissions);
-        document.getElementById('quarterlyQuota').addEventListener('input', calculateCommissions);
 
+        cancelEditBtn.addEventListener('click', cancelEditing);
+        
+        // Add event listeners to all setting inputs to recalculate on change
+        document.querySelectorAll('#annualQuota, #quarterlyQuota, .rate-input').forEach(input => {
+            input.addEventListener('input', calculateCommissions);
+        });
+
+        // Initial render
         calculateCommissions();
     </script>
 </body>
